@@ -1,6 +1,6 @@
 // utils/utils.js
 
-export function toTitleCase(str) {
+export function toTitleCase(str: string) {
     return str
       .toLowerCase()
       .replace(/[_\-]+/g, ' ') // Replace underscores/dashes with spaces

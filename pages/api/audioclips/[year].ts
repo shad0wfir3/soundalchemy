@@ -1,7 +1,11 @@
-// pages/api/audioclips/[year].js
+// pages/api/audioclips/[year].ts
+import { NextApiRequest, NextApiResponse } from 'next';
 import AWS from 'aws-sdk';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   // Correctly extract the `year` from the URL
   const { year } = req.query; // This properly extracts the year from the URL
 

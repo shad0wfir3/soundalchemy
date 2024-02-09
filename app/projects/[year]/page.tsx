@@ -28,29 +28,25 @@ export default function ProjectsPerYearPage() {
 
   const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrackId, setCurrentTrackId] = useState(null);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [currentTrackId, setCurrentTrackId] = useState<number | null>(null);
+
 
   useEffect(() => {
     if (year) {
       setIsLoading(true);
       fetch(`/api/audioclips/${year}`)
         .then((response) => response.json())
-        .then(async (data: ApiResponse) => {
-          const promises = data.map(async (file: { Key: string; }, index: any) => {
-            const audio = new Audio(
-              `https://s3.af-south-1.amazonaws.com/soundalchemy.studio/${file.Key}`
-            );
-            return new Promise((resolve) => {
+        .then(async (data: { Key: string }[]) => {
+          const promises: Promise<AudioFile>[] = data.map(async (file, index) => {
+            const audio = new Audio(`https://s3.af-south-1.amazonaws.com/soundalchemy.studio/${file.Key}`);
+            return new Promise<AudioFile>(resolve => {
               audio.onloadedmetadata = () => {
                 resolve({
                   id: index,
-                  name: toTitleCase(
-                    file.Key.split("/")[1]
-                      .replace(".wav", "")
-                      .replace(".mp3", "")
-                      .replace(/_/g, " ")
-                  ),
+                  name: toTitleCase(file.Key.split("/")[1].replace(".wav", "").replace(".mp3", "").replace(/_/g, " ")),
                   src: audio.src,
                   description: "Sample Description",
                   duration: audio.duration,
@@ -61,11 +57,11 @@ export default function ProjectsPerYearPage() {
 
           const adaptedData = await Promise.all(promises);
           setAudioFiles(adaptedData);
-          setIsLoading(false); // End loading
+          setIsLoading(false);
         })
         .catch((error) => {
-          setIsLoading(false);
           console.error("Failed to fetch audio files:", error);
+          setIsLoading(false);
         });
     }
   }, [year]);
