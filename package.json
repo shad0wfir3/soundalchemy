@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@madzadev/audio-player": "^2.1.2",
+    "aws-sdk": "^2.1554.0",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.284.0",
     "markdown-wasm": "^1.2.0",

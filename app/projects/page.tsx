@@ -1,34 +1,45 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigation } from "../components/nav";
+import Particles from "../components/particles";
+import { Card } from "../components/card";
 
-export const revalidate = 60;
 export default function ProjectsYearsPage() {
-  const years = [
-    "2023",
-    "2022",
-    "2021",
-    "2020",
-    "2019",
-    "2018",
-    "2017",
-    "2016",
-    "2015",
-  ];
+  const [years, setYears] = useState([]);
+
+  useEffect(() => {
+    async function fetchYears() {
+      const response = await fetch("/api/years");
+      const yearsData = await response.json();
+      setYears(yearsData);
+    }
+
+    fetchYears();
+  }, []);
 
   return (
-    <div className="relative pb-16">
+    <>
       <Navigation />
-      <div className="px-6 items-centre pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32 text-center">
-        <h1 className="z-10 items-centre text-4xl tracking-wider text-transparent duration-1000 bg-white cursor-default text-edge-outline animate-title font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text ">
+      <div className="flex justify-center pt-20">
+        <div className="grid grid-cols-3 gap-4 mt-30 pt-10">
           {years.map((year) => (
-            <Link key={year} href={`/projects/${year}`}>
-                {year}
-                <br />
-            </Link>
+            <div className="p-4">
+            
+                <Link href={`/projects/${year}`}>
+                  <div className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
+                  <article className="relative w-full h-full p-4 md:p-8">
+                    <h2 className="text-center text-5xl font-bold text-zinc-100 group-hover:text-white md:text-8xl sm:text-4xl font-display animate-title">
+                      {year}
+                    </h2>
+                  </article>
+                  <div className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
+                </Link>
+             
+            </div>
           ))}
-        </h1>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
