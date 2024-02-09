@@ -1,21 +1,21 @@
 import "../global.css";
-import { Inter } from "@next/font/google";
-import LocalFont from "@next/font/local";
+import { Inter } from "next/font/google";
+import LocalFont from "next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
   title: {
-    default: "chronark.com",
-    template: "%s | chronark.com",
+    default: "soundalchemy.studio",
+    template: "%s | soundalchemy.studio",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "Portfolio of Tasneem, a sound engineer and music producer",
   openGraph: {
-    title: "chronark.com",
+    title: "soundalchemy.studio",
     description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
-    url: "https://chronark.com",
-    siteName: "chronark.com",
+      "Portfolio of Tasneem, a sound engineer and music producer",
+    url: "https://soundalchemy.studio",
+    siteName: "soundalchemy.studio",
     images: [
       {
         url: "https://chronark.com/og.png",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Chronark",
+    title: "Sound Alchemy",
     card: "summary_large_image",
   },
   icons: {

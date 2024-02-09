@@ -17,6 +17,13 @@ export const Navigation: React.FC = () => {
 		return () => observer.disconnect();
 	}, []);
 
+  
+	// // Check if the current URL matches the pattern for projects/{year}
+	// const isProjectYearPage = ref.current === '/projects/[year]';
+	
+	// // Set the href based on whether we're on a specific year's page or not
+	// const href = isProjectYearPage ? '/projects' : '/';
+
 	return (
 		<header ref={ref}>
 			<div
@@ -32,7 +39,13 @@ export const Navigation: React.FC = () => {
 							href="/projects"
 							className="duration-200 text-zinc-400 hover:text-zinc-100"
 						>
-							Projects
+							Audio Projects
+						</Link>
+						<Link
+							href="/about"
+							className="duration-200 text-zinc-400 hover:text-zinc-100"
+						>
+							About Me
 						</Link>
 						<Link
 							href="/contact"
@@ -46,7 +59,7 @@ export const Navigation: React.FC = () => {
 						href="/"
 						className="duration-200 text-zinc-300 hover:text-zinc-100"
 					>
-						<ArrowLeft className="w-6 h-6 " />
+						Tasneem @ Sound Alchemy
 					</Link>
 				</div>
 			</div>
