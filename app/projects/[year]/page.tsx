@@ -11,11 +11,22 @@ import { StopCircle } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+
+type AudioFile = {
+  id: number;
+  name: string;
+  src: string;
+  description: string;
+  duration: number; // Assuming duration is a number (in seconds, for example)
+};
+
+type ApiResponse = { Key: string }[];
+
 export default function ProjectsPerYearPage() {
   const params = useParams<{ year: string }>();
   const year = params?.year ?? "";
 
-  const [audioFiles, setAudioFiles] = useState([]);
+  const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackId, setCurrentTrackId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +36,8 @@ export default function ProjectsPerYearPage() {
       setIsLoading(true);
       fetch(`/api/audioclips/${year}`)
         .then((response) => response.json())
-        .then(async (data) => {
-          const promises = data.map(async (file, index) => {
+        .then(async (data: ApiResponse) => {
+          const promises = data.map(async (file: { Key: string; }, index: any) => {
             const audio = new Audio(
               `https://s3.af-south-1.amazonaws.com/soundalchemy.studio/${file.Key}`
             );
@@ -59,7 +70,7 @@ export default function ProjectsPerYearPage() {
     }
   }, [year]);
 
-  const handleCardClick = (trackId) => {
+  const handleCardClick = (trackId: number) => {
     // If the clicked track is already playing, stop the playback.
     if (isPlaying && currentTrackId === trackId) {
       setIsPlaying(false); // Stops the playback
@@ -70,7 +81,7 @@ export default function ProjectsPerYearPage() {
     }
   };
 
-  function formatDuration(duration) {
+  function formatDuration(duration: number) {
     const minutes = Math.floor(duration / 60);
     const seconds = Math.floor(duration % 60);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
@@ -109,7 +120,7 @@ export default function ProjectsPerYearPage() {
           <div className="grid grid-cols-1 gap-8 mx-auto lg:grid-cols-2 ">
             {audioFiles.map((track) => (
               <div
-                key={track.id}
+                key={track.id} // Cast the type of track.id to string
                 className="cursor-pointer"
                 onClick={() => handleCardClick(track.id)}
               >
@@ -122,7 +133,7 @@ export default function ProjectsPerYearPage() {
                       </div>
                       <span className="flex items-center gap-1 text-xs text-zinc-500">
                         <Eye className="w-4 h-4" />{" "}
-                        {formatDuration(track.duration)}
+                        {formatDuration(track.duration as number)}
                       </span>
                     </div>
                     <div className="flex items-center mt-4">
@@ -163,9 +174,8 @@ export default function ProjectsPerYearPage() {
             playList={audioFiles}
             audioInitialState={{
               isPlaying,
-              curPlayId: currentTrackId,
+              curPlayId: currentTrackId ?? 0,
             }}
-            autoPlay={isPlaying} // Auto-play when a track is clicked
             activeUI={{
               all: false,
               playButton: true,
